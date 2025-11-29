@@ -77,10 +77,18 @@ void Aquarium::Init() {
     // seaweed
     seaweed1.Init(-0.85f, -1.0f + sandHeight * 0.1f, 0.4f, seaweedTex1);
     seaweed2.Init(0.45f, -1.0f + sandHeight * 0.1f, 0.35f, seaweedTex2);
+
+    //fishes
+    GLuint nemoTex = LoadTexture("Resources/nemo.png");
+    nemo.Init(nemoTex, -0.5f, 0.0f);
+    GLuint goldfishTex = LoadTexture("Resources/goldfish.png");
+    goldfish.Init(goldfishTex, 0.7f, 0.0f);
 }
 
-void Aquarium::Update(bool chestOpening) {
+void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
     chest.Update(chestOpening);
+    nemo.Update(window);     
+    goldfish.Update(window);
 }
 
 void Aquarium::Render() {
@@ -104,6 +112,10 @@ void Aquarium::Render() {
 
     // CHEST
     chest.Render(texShader);
+
+    //FISHES
+    nemo.Render(texShader);
+    goldfish.Render(texShader);
 
     // WHITE TRANSPARENT
     glUseProgram(colorShader);

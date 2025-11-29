@@ -133,7 +133,9 @@
     <ClCompile Include="external\glad\src\glad.c" />
     <ClCompile Include="Src\Aquarium.cpp" />
     <ClCompile Include="Src\Chest.cpp" />
+    <ClCompile Include="Src\Goldfish.cpp" />
     <ClCompile Include="Src\main.cpp" />
+    <ClCompile Include="Src\Nemo.cpp" />
     <ClCompile Include="Src\Seaweed.cpp" />
     <ClCompile Include="Src\Util.cpp" />
   </ItemGroup>
@@ -146,6 +148,8 @@
   <ItemGroup>
     <ClInclude Include="Header\Aquarium.h" />
     <ClInclude Include="Header\Chest.h" />
+    <ClInclude Include="Header\Goldfish.h" />
+    <ClInclude Include="Header\Nemo.h" />
     <ClInclude Include="Header\Seaweed.h" />
     <ClInclude Include="Header\stb_image.h" />
     <ClInclude Include="Header\Util.h" />

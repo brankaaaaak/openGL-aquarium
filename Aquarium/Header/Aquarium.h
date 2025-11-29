@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include "Chest.h"
 #include "Seaweed.h"
+#include "Nemo.h"
+#include "Goldfish.h"
 
 class Aquarium {
 public:
@@ -11,7 +13,7 @@ public:
 
     void Init();
     void Render();
-    void Update(bool chestOpening);
+    void Update(bool chestOpening, GLFWwindow* window);
 
 private:
     int screenWidth;
@@ -30,6 +32,8 @@ private:
 
     Chest chest;
     Seaweed seaweed1, seaweed2;
+    Nemo nemo;
+    Goldfish goldfish;
 
     unsigned int MakeTexturedQuad(float* data);
     unsigned int MakeQuadVAO(float* data);

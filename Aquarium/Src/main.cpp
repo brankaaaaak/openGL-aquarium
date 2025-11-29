@@ -39,7 +39,7 @@ int main() {
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_RELEASE)
             keyCPressed = false;
 
-        aquarium.Update(chestOpening);
+        aquarium.Update(chestOpening, window);
 
         glClear(GL_COLOR_BUFFER_BIT);
         aquarium.Render();
