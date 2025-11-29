@@ -9,6 +9,7 @@ public:
     float speed;
     GLuint tex;
     unsigned int VAO;
+    bool facingRight;
 
     Goldfish();
     void Init(GLuint texture, float startX, float startY, float w = 0.1f, float h = 0.1f);

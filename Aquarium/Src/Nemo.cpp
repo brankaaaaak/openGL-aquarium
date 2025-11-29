@@ -9,6 +9,7 @@ void Nemo::Init(GLuint texture, float startX, float startY, float w, float h) {
     width = w;
     height = h;
     MakeQuad();
+    facingRight = true;
 }
 
 void Nemo::Update(GLFWwindow* window) {
@@ -17,6 +18,20 @@ void Nemo::Update(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) x -= speed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) x += speed;
 
+    bool movedLeft = false;
+    bool movedRight = false;
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        x -= speed;
+        movedLeft = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        x += speed;
+        movedRight = true;
+    }
+    if (movedLeft && facingRight) facingRight = false;
+    if (movedRight && !facingRight) facingRight = true;
+
     if (x - width < -1.0f) x = -1.0f + width;
     if (x + width > 1.0f) x = 1.0f - width;
 
@@ -24,23 +39,28 @@ void Nemo::Update(GLFWwindow* window) {
     if (y + height > topLimit) y = topLimit - height;
 
     if (y - height < -1.0f) y = -1.0f + height;
+
 }
 
-
 void Nemo::Render(GLuint shader) {
+
+    float u1 = facingRight ? 0.0f : 1.0f;
+    float u2 = facingRight ? 1.0f : 0.0f;
+
+    float quad[] = {
+        x - width, y - height,  u1, 0,
+        x + width, y - height,  u2, 0,
+        x + width, y + height,  u2, 1,
+        x - width, y + height,  u1, 1
+    };
+
     glUseProgram(shader);
     glBindTexture(GL_TEXTURE_2D, tex);
 
-    float quad[] = {
-        x - width, y - height, 0, 0,
-        x + width, y - height, 1, 0,
-        x + width, y + height, 1, 1,
-        x - width, y + height, 0, 1
-    };
-
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VAO);  // update buffer
+    glBindBuffer(GL_ARRAY_BUFFER, VAO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quad), quad);
+
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
