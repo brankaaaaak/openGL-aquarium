@@ -9,6 +9,8 @@ public:
     GLuint tex;
     unsigned int VAO;
     bool active;
+    float startX;    
+    float oscillationPhase;  
 
     Bubble();
     void Init(GLuint texture, float startX, float startY, float r = 0.02f, float s = 0.005f);
