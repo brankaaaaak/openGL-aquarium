@@ -82,7 +82,7 @@ void Aquarium::Init() {
     GLuint nemoTex = LoadTexture("Resources/nemo.png");
     nemo.Init(nemoTex, -0.5f, 0.0f);
     GLuint goldfishTex = LoadTexture("Resources/goldfish.png");
-    goldfish.Init(goldfishTex, 0.7f, 0.0f);
+    goldfish.Init(goldfishTex, -0.2f, -0.4f);
 }
 
 void Aquarium::Update(bool chestOpening, GLFWwindow* window) {

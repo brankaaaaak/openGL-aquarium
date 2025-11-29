@@ -1,6 +1,9 @@
 ﻿#include "Goldfish.h"
+#include <Util.h>
 
-Goldfish::Goldfish() : x(0), y(0), width(0.1f), height(0.1f), speed(0.01f), tex(0), VAO(0) {}
+Goldfish::Goldfish() : x(0), y(0), width(0.1f), height(0.1f), speed(0.01f), tex(0), VAO(0) {
+    kPressedLastFrame = false;
+}
 
 void Goldfish::Init(GLuint texture, float startX, float startY, float w, float h) {
     tex = texture;
@@ -11,13 +14,36 @@ void Goldfish::Init(GLuint texture, float startX, float startY, float w, float h
     facingRight = true;
     MakeQuad();
 
+    bubbleTex = LoadTexture("Resources/bubble.png");
+
 }
 
 void Goldfish::Update(GLFWwindow* window) {
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) y += speed;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) y -= speed;
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) x -= speed;
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) x += speed;
+    bool kPressedNow = glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS;
+
+    if (kPressedNow && !kPressedLastFrame) {
+        float spacingY = 0.03f;
+        float offsetsX[3] = { 0.02f, -0.02f, 0.0f };
+
+        for (int i = 0; i < 3; i++) {
+            Bubble b;
+            float offsetX = offsetsX[i];
+            float offsetY = i * spacingY;  // 0, 0.03, 0.06
+            b.Init(bubbleTex, x + offsetX, y + height + offsetY, 0.02f, 0.005f);
+            bubbles.push_back(b);
+        }
+    }
+
+    kPressedLastFrame = kPressedNow;
+
+    for (auto& b : bubbles) {
+        b.Update(0.2f);
+    }
+    bubbles.erase(
+        std::remove_if(bubbles.begin(), bubbles.end(),
+            [](Bubble& b) { return !b.active; }),
+        bubbles.end()
+    );
 
     bool movedLeft = false;
     bool movedRight = false;
@@ -47,6 +73,10 @@ void Goldfish::Update(GLFWwindow* window) {
 }
 
 void Goldfish::Render(GLuint shader) {
+
+    for (auto& b : bubbles) {
+        b.Render(shader);
+    }
 
     float u1 = facingRight ? 0.0f : 1.0f;
     float u2 = facingRight ? 1.0f : 0.0f;

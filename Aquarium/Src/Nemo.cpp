@@ -1,6 +1,9 @@
 ﻿#include "Nemo.h"
+#include <Util.h>
 
-Nemo::Nemo() : x(0), y(0), width(0.1f), height(0.1f), speed(0.01f), tex(0), VAO(0) {}
+Nemo::Nemo() : x(0), y(0), width(0.1f), height(0.1f), speed(0.01f), tex(0), VAO(0) {
+    zPressedLastFrame = false;
+}
 
 void Nemo::Init(GLuint texture, float startX, float startY, float w, float h) {
     tex = texture;
@@ -8,16 +11,43 @@ void Nemo::Init(GLuint texture, float startX, float startY, float w, float h) {
     y = startY;
     width = w;
     height = h;
-    MakeQuad();
     facingRight = true;
+    MakeQuad();
+
+    bubbleTex = LoadTexture("Resources/bubble.png");
 }
 
 void Nemo::Update(GLFWwindow* window) {
+    
+    bool zPressedNow = glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS;
+
+    if (zPressedNow && !zPressedLastFrame) {
+        float spacingY = 0.03f; 
+        float offsetsX[3] = { 0.02f, -0.02f, 0.0f }; 
+
+        for (int i = 0; i < 3; i++) {
+            Bubble b;
+            float offsetX = offsetsX[i];
+            float offsetY = i * spacingY;  // 0, 0.03, 0.06
+            b.Init(bubbleTex, x + offsetX, y + height + offsetY, 0.02f, 0.005f);
+            bubbles.push_back(b);
+        }
+    }
+
+    zPressedLastFrame = zPressedNow;
+
+    for (auto& b : bubbles) {
+        b.Update(0.2f);
+    }
+    bubbles.erase(
+        std::remove_if(bubbles.begin(), bubbles.end(),
+            [](Bubble& b) { return !b.active; }),
+        bubbles.end()
+    );
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) y += speed;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) y -= speed;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) x -= speed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) x += speed;
-
+    
     bool movedLeft = false;
     bool movedRight = false;
 
@@ -43,6 +73,10 @@ void Nemo::Update(GLFWwindow* window) {
 }
 
 void Nemo::Render(GLuint shader) {
+
+    for (auto& b : bubbles) {
+        b.Render(shader);
+    }
 
     float u1 = facingRight ? 0.0f : 1.0f;
     float u2 = facingRight ? 1.0f : 0.0f;
