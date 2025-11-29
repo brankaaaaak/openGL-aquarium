@@ -131,8 +131,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="external\glad\src\glad.c" />
-    <ClCompile Include="Src\Chest.cpp" />
     <ClCompile Include="Src\Aquarium.cpp" />
+    <ClCompile Include="Src\Chest.cpp" />
+    <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Seaweed.cpp" />
     <ClCompile Include="Src\Util.cpp" />
   </ItemGroup>
@@ -143,6 +144,7 @@
     <None Include="shaders\tex.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Aquarium.h" />
     <ClInclude Include="Header\Chest.h" />
     <ClInclude Include="Header\Seaweed.h" />
     <ClInclude Include="Header\stb_image.h" />

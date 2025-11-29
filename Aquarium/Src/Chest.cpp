@@ -1,57 +1,61 @@
 #include "Chest.h"
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
-Chest::Chest() : VAO(0), texArray(nullptr), state(0), lastUpdateTime(0) {}
+Chest::Chest() : VAO(0), VBO(0), state(0) {}
 
 Chest::~Chest() {
-    glDeleteVertexArrays(1, &VAO);
+    if (VBO) glDeleteBuffers(1, &VBO);
+    if (VAO) glDeleteVertexArrays(1, &VAO);
 }
 
-void Chest::Init(unsigned int* textures) {
-    texArray = textures;
+void Chest::Init(unsigned int tex[5]) {
+    for (int i = 0; i < 5; ++i) {
+        textures[i] = tex[i];
+    }
+
     float chestX = 0.6f;
-    float chestY = -1.0f + 0.45f * 0.2f; 
+    float chestY = -0.85f; 
     float chestWidth = 0.2f;
-    float chestHeight = 0.15f;
+    float chestHeight = 0.2f;
+
     float chestQuad[] = {
-        chestX, chestY, 0,0,
-        chestX + chestWidth, chestY, 1,0,
-        chestX + chestWidth, chestY + chestHeight, 1,1,
-        chestX, chestY + chestHeight, 0,1
+        chestX, chestY, 0.0f, 0.0f,                 // bottom-left
+        chestX + chestWidth, chestY, 1.0f, 0.0f,   // bottom-right
+        chestX + chestWidth, chestY + chestHeight, 1.0f, 1.0f, // top-right
+        chestX, chestY + chestHeight, 0.0f, 1.0f   // top-left
     };
-    VAO = MakeTexturedQuad(chestQuad);
-}
 
-void Chest::Update(bool opening) {
-    double currentTime = glfwGetTime();
-    if (currentTime - lastUpdateTime < 0.066) return; 
-    lastUpdateTime = currentTime;
-
-    if (opening && state < 4) state++;
-    else if (!opening && state > 0) state--;
-}
-
-void Chest::Render(unsigned int shader) {
-    glUseProgram(shader);
-    glBindVertexArray(VAO);
-    glBindTexture(GL_TEXTURE_2D, texArray[state]);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-}
-
-unsigned int Chest::MakeTexturedQuad(float* data) {
-    unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 16, data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(chestQuad), chestQuad, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    return VAO;
+    glBindVertexArray(0);
+}
+
+void Chest::Update(bool opening) {
+    if (opening && state < 4) {
+        state++;
+    }
+    else if (!opening && state > 0) {
+        state--;
+    }
+}
+
+void Chest::Render(unsigned int shader) {
+    glUseProgram(shader);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures[state]);
+    glUniform1i(glGetUniformLocation(shader, "uTex"), 0);
+
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glBindVertexArray(0);
 }

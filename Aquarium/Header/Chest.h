@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <glad/glad.h>
 
 class Chest {
@@ -6,15 +6,14 @@ public:
     Chest();
     ~Chest();
 
-    void Init(unsigned int* textures);  
-    void Update(bool opening);           
-    void Render(unsigned int shader);   
+    void Init(unsigned int textures[5]);
+
+    void Update(bool opening);
+
+    void Render(unsigned int shader);
 
 private:
-    unsigned int VAO;
-    unsigned int* texArray;   
-    int state;                // 0-4 (zatvoren -> otvoren)
-    double lastUpdateTime;
-
-    unsigned int MakeTexturedQuad(float* data);
+    unsigned int VAO, VBO;
+    unsigned int textures[5]; 
+    int state;                
 };
