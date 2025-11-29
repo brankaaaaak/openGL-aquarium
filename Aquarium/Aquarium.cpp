@@ -59,7 +59,7 @@ int main()
     int screenWidth = mode->width;
     int screenHeight = mode->height;
 
-    GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Akvarijum", monitor, NULL);
+    GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Aquarium", monitor, NULL);
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -68,11 +68,15 @@ int main()
         return -1;
     }
 
-    unsigned int texShader = LoadShaderProgram("shaders/tex.vert", "shaders/tex.frag");
-    unsigned int colorShader = LoadShaderProgram("shaders/color.vert", "shaders/color.frag");
+    unsigned int texShader = LoadShaderProgram("Shader/tex.vert", "Shader/tex.frag");
+    unsigned int colorShader = LoadShaderProgram("Shader/color.vert", "Shader/color.frag");
 
-    unsigned int bgTex = LoadTexture("resources/background.jpg");
-    unsigned int sandTex = LoadTexture("resources/sand.png");
+    unsigned int bgTex = LoadTexture("Resources/background.jpg");
+    unsigned int sandTex = LoadTexture("Resources/sand.png");
+    unsigned int seaweedTex1 = LoadTexture("Resources/seaweed.png");
+    unsigned int seaweedTex2 = LoadTexture("Resources/seaweed2.png");
+
+
 
     float bgQuad[] = {
         -1, -1,  0, 0,
@@ -144,6 +148,30 @@ int main()
     };
     unsigned int VAO_rightB = MakeQuadVAO(rightB);
 
+    // SEA WEED
+    float seaweed1BottomY = -1.0f + sandHeight * 0.1f;  
+    float seaweed1TopY = seaweed1BottomY + 0.4f;
+
+    float seaweed1Quad[] = {
+        -0.9f, seaweed1BottomY, 0,0,  // bottom-left
+        -0.8f, seaweed1BottomY, 1,0,  // bottom-right
+        -0.8f, seaweed1TopY,    1,1,  // top-right
+        -0.9f, seaweed1TopY,    0,1   // top-left
+    };
+
+    float seaweed2BottomY = -1.0f + sandHeight * 0.1f;
+    float seaweed2TopY = seaweed2BottomY + 0.35f;
+
+    float seaweed2Quad[] = {
+        0.4f, seaweed2BottomY, 0,0,
+        0.5f, seaweed2BottomY, 1,0,
+        0.5f, seaweed2TopY,    1,1,
+        0.4f, seaweed2TopY,    0,1
+    };
+
+    unsigned int VAO_seaweed1 = MakeTexturedQuad(seaweed1Quad);
+    unsigned int VAO_seaweed2 = MakeTexturedQuad(seaweed2Quad);
+
 
     double frameTime = 1.0 / 75.0;
 
@@ -169,6 +197,20 @@ int main()
         glBindTexture(GL_TEXTURE_2D, sandTex);
         glBindVertexArray(VAO_sand);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+        // SEA WEED
+        glUseProgram(texShader);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, seaweedTex1);
+        glUniform1i(glGetUniformLocation(texShader, "uTex"), 0);
+        glBindVertexArray(VAO_seaweed1);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+        glBindTexture(GL_TEXTURE_2D, seaweedTex2);
+        glBindVertexArray(VAO_seaweed2);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
 
         // WHITE 
         glUseProgram(colorShader);
