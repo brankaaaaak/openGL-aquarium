@@ -1,4 +1,4 @@
-#include "Aquarium.h"
+﻿#include "Aquarium.h"
 #include "Util.h"
 #include <iostream>
 
@@ -76,19 +76,75 @@ void Aquarium::Init() {
 
     // seaweed
     seaweed1.Init(-0.85f, -1.0f + sandHeight * 0.1f, 0.4f, seaweedTex1);
-    seaweed2.Init(0.45f, -1.0f + sandHeight * 0.1f, 0.35f, seaweedTex2);
+    seaweed2.Init(0.85f, -1.0f + sandHeight * 0.1f, 0.35f, seaweedTex2);
 
     //fishes
     GLuint nemoTex = LoadTexture("Resources/nemo.png");
     nemo.Init(nemoTex, -0.5f, 0.0f);
     GLuint goldfishTex = LoadTexture("Resources/goldfish.png");
     goldfish.Init(goldfishTex, -0.2f, -0.4f);
+
+    //food
+    foodTex = LoadTexture("Resources/particle.png");
 }
 
 void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
+
+    static bool enterPressedLastFrame = false;
+    bool enterPressedNow = glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS;
+
+    if (enterPressedNow && !enterPressedLastFrame)
+    {
+        float startY = 1.2f;
+        int num = 2 + rand() % 4;  // 2 do 5 
+        float centerX = -0.7f + static_cast<float>(rand()) / RAND_MAX * 1.4f; // -0.7 do 0.7
+
+        for (int i = 0; i < num; i++) {
+            float xOffset = -0.1f + static_cast<float>(rand()) / RAND_MAX * 0.3f; // -0.1 do 0.2
+            float yOffset = -0.01f + static_cast<float>(rand()) / RAND_MAX * 0.11f; // -0.01 do 0.1
+
+            FoodParticle p;
+            p.Init(foodTex, centerX + xOffset, startY + yOffset);
+            food.push_back(p);
+        }
+    }
+
+    enterPressedLastFrame = enterPressedNow;
+
+    enterPressedLastFrame = enterPressedNow;
     chest.Update(chestOpening);
     nemo.Update(window);     
     goldfish.Update(window);
+    float waterLevel = 0.2f;     
+    float sandSurface = -0.95f;
+
+    for (auto& p : food) {
+        p.Update(waterLevel, sandSurface);
+
+        if (p.active &&
+            p.x > nemo.x - nemo.width &&
+            p.x < nemo.x + nemo.width &&
+            p.y > nemo.y - nemo.height &&
+            p.y < nemo.y + nemo.height)
+        {
+            p.active = false;
+            nemo.height += 0.04f; //0.1f ?    
+        }
+
+        if (p.active &&
+            p.x > goldfish.x - goldfish.width &&
+            p.x < goldfish.x + goldfish.width &&
+            p.y > goldfish.y - goldfish.height &&
+            p.y < goldfish.y + goldfish.height)
+        {
+            p.active = false;
+            goldfish.height += 0.03f; //0.1f ?  
+        }
+    }
+
+    food.erase(std::remove_if(food.begin(), food.end(),
+        [](FoodParticle& p) { return !p.active; }), food.end());
+
 }
 
 void Aquarium::Render() {
@@ -106,16 +162,20 @@ void Aquarium::Render() {
     glBindVertexArray(VAO_sand);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
+    // CHEST
+    chest.Render(texShader);
+
     // SEAWEED
     seaweed1.Render(texShader);
     seaweed2.Render(texShader);
 
-    // CHEST
-    chest.Render(texShader);
-
     //FISHES
     nemo.Render(texShader);
     goldfish.Render(texShader);
+
+    //FOOD
+    for (auto& p : food)
+        p.Render(texShader);
 
     // WHITE TRANSPARENT
     glUseProgram(colorShader);

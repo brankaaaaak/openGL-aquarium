@@ -5,6 +5,7 @@
 #include "Seaweed.h"
 #include "Nemo.h"
 #include "Goldfish.h"
+#include "FoodParticle.h"
 
 class Aquarium {
 public:
@@ -34,6 +35,9 @@ private:
     Seaweed seaweed1, seaweed2;
     Nemo nemo;
     Goldfish goldfish;
+
+    std::vector<FoodParticle> food;
+    GLuint foodTex;
 
     unsigned int MakeTexturedQuad(float* data);
     unsigned int MakeQuadVAO(float* data);
