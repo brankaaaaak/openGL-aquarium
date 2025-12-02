@@ -20,12 +20,9 @@ void Aquarium::Init() {
     sandTex = LoadTexture("Resources/sand.png");
     unsigned int seaweedTex1 = LoadTexture("Resources/seaweed.png");
     unsigned int seaweedTex2 = LoadTexture("Resources/seaweed2.png");
-    unsigned int chestTex[5];
+    unsigned int chestTex[2];
     chestTex[0] = LoadTexture("Resources/chest1.png");
     chestTex[1] = LoadTexture("Resources/chest2.png");
-    chestTex[2] = LoadTexture("Resources/chest3.png");
-    chestTex[3] = LoadTexture("Resources/chest4.png");
-    chestTex[4] = LoadTexture("Resources/chest5.png");
 
     // background
     float bgQuad[] = {

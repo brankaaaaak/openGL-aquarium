@@ -13,10 +13,10 @@ void Chest::Init(unsigned int tex[5]) {
         textures[i] = tex[i];
     }
 
-    float chestX = 0.6f;
-    float chestY = -0.85f; 
-    float chestWidth = 0.2f;
-    float chestHeight = 0.2f;
+    float chestX = 0.5f;
+    float chestY = -0.95f; 
+    float chestWidth = 0.4f;
+    float chestHeight = 0.4f;
 
     float chestQuad[] = {
         chestX, chestY, 0.0f, 0.0f,                 // bottom-left
@@ -41,7 +41,7 @@ void Chest::Init(unsigned int tex[5]) {
 }
 
 void Chest::Update(bool opening) {
-    if (opening && state < 4) {
+    if (opening && state < 1) {
         state++;
     }
     else if (!opening && state > 0) {
