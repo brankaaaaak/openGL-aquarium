@@ -19,7 +19,7 @@ void Goldfish::Init(GLuint texture, float startX, float startY, float w, float h
 }
 
 void Goldfish::Update(GLFWwindow* window) {
-    bool kPressedNow = glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS;
+    bool kPressedNow = glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS;
 
     if (kPressedNow && !kPressedLastFrame) {
         float spacingY = 0.03f;
@@ -48,14 +48,14 @@ void Goldfish::Update(GLFWwindow* window) {
     bool movedLeft = false;
     bool movedRight = false;
 
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) y += speed;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) y -= speed;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) y += speed;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) y -= speed;
 
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         x -= speed;
         movedLeft = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         x += speed;
         movedRight = true;
     }

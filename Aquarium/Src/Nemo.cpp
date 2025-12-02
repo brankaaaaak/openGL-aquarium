@@ -19,7 +19,7 @@ void Nemo::Init(GLuint texture, float startX, float startY, float w, float h) {
 
 void Nemo::Update(GLFWwindow* window) {
     
-    bool zPressedNow = glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS;
+    bool zPressedNow = glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS;
 
     if (zPressedNow && !zPressedLastFrame) {
         float spacingY = 0.03f; 
@@ -45,17 +45,17 @@ void Nemo::Update(GLFWwindow* window) {
         bubbles.end()
     );
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) y += speed;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) y -= speed;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) y += speed;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) y -= speed;
     
     bool movedLeft = false;
     bool movedRight = false;
 
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
         x -= speed;
         movedLeft = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
         x += speed;
         movedRight = true;
     }

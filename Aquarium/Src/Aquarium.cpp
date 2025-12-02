@@ -125,7 +125,7 @@ void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
             p.y < nemo.y + nemo.height)
         {
             p.active = false;
-            nemo.height += 0.04f; //0.1f ?    
+            nemo.height += 0.04f;     
         }
 
         if (p.active &&
@@ -135,7 +135,7 @@ void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
             p.y < goldfish.y + goldfish.height)
         {
             p.active = false;
-            goldfish.height += 0.03f; //0.1f ?  
+            goldfish.height += 0.03f; 
         }
     }
 
