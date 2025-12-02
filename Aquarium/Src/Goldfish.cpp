@@ -92,7 +92,7 @@ void Goldfish::Render(GLuint shader) {
     glBindTexture(GL_TEXTURE_2D, tex);
 
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quad), quad);
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -106,9 +106,8 @@ void Goldfish::MakeQuad() {
         x - width, y + height, 0, 1
     };
 
-    unsigned int VBO;
     glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &VBO);  
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quad), quad, GL_DYNAMIC_DRAW);

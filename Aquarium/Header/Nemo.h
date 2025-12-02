@@ -10,11 +10,11 @@ public:
     float width, height;
     float speed;
     GLuint tex;
-    unsigned int VAO;
     bool facingRight;
     std::vector<Bubble> bubbles;  
     GLuint bubbleTex;
     bool zPressedLastFrame;
+    unsigned int VAO, VBO;
 
     Nemo();
     void Init(GLuint texture, float startX, float startY, float w = 0.1f, float h = 0.1f);

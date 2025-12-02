@@ -10,7 +10,7 @@ public:
     float width, height;
     float speed;
     GLuint tex;
-    unsigned int VAO;
+    unsigned int VAO, VBO;
     bool facingRight;
     std::vector<Bubble> bubbles;
     GLuint bubbleTex;
