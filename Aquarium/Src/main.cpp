@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+﻿#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <thread>
 #include <chrono>
@@ -14,6 +14,7 @@ int main() {
 
     GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Aquarium", monitor, NULL);
     glfwMakeContextCurrent(window);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) return -1;
 
@@ -43,6 +44,10 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT);
         aquarium.Render();
+
+        double mouseX, mouseY;
+        glfwGetCursorPos(window, &mouseX, &mouseY);
+        aquarium.RenderCursorAtMouse(mouseX, mouseY);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

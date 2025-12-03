@@ -15,6 +15,7 @@ public:
     void Init();
     void Render();
     void Update(bool chestOpening, GLFWwindow* window);
+    void RenderCursorAtMouse(double mouseX, double mouseY);
 
 private:
     int screenWidth;
@@ -25,6 +26,7 @@ private:
     unsigned int colorShader;
     unsigned int bgTex;
     unsigned int sandTex;
+    unsigned int cursorTex;
 
     unsigned int VAO_bg;
     unsigned int VAO_fill;
@@ -41,4 +43,5 @@ private:
 
     unsigned int MakeTexturedQuad(float* data);
     unsigned int MakeQuadVAO(float* data);
+    void RenderCursor(float mouseX, float mouseY, int screenWidth, int screenHeight, unsigned int cursorTex);
 };

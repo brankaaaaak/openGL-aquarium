@@ -5,6 +5,7 @@
 #include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include <GLFW/glfw3.h>
 
 static std::string ReadFile(const char* path)
 {
@@ -71,4 +72,25 @@ unsigned int LoadTexture(const char* path)
     stbi_image_free(data);
 
     return tex;
+}
+GLFWcursor* LoadImageToCursor(const char* filePath) {
+    int width, height, channels;
+    unsigned char* pixels = stbi_load(filePath, &width, &height, &channels, 4); 
+
+    if (!pixels) {
+        std::cout << "Cursor not loaded!Path: " << filePath << std::endl;
+        return nullptr;
+    }
+
+    GLFWimage image;
+    image.width = width;
+    image.height = height;
+    image.pixels = pixels;
+
+    int hotspotX = width / 2;   
+    int hotspotY = height / 2;
+
+    GLFWcursor* cursor = glfwCreateCursor(&image, hotspotX, hotspotY);
+    stbi_image_free(pixels);
+    return cursor;
 }

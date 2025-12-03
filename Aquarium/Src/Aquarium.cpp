@@ -4,7 +4,7 @@
 
 Aquarium::Aquarium(int screenWidth, int screenHeight)
     : screenWidth(screenWidth), screenHeight(screenHeight), borderPx(10.0f),
-    texShader(0), colorShader(0), bgTex(0), sandTex(0),
+    texShader(0), colorShader(0), bgTex(0), sandTex(0), cursorTex(0),
     VAO_bg(0), VAO_fill(0), VAO_bottom(0), VAO_leftB(0), VAO_rightB(0) {
 }
 
@@ -23,6 +23,7 @@ void Aquarium::Init() {
     unsigned int chestTex[2];
     chestTex[0] = LoadTexture("Resources/chest1.png");
     chestTex[1] = LoadTexture("Resources/chest2.png");
+    cursorTex = LoadTexture("Resources/anchor.png");
 
     // background
     float bgQuad[] = {
@@ -212,4 +213,42 @@ unsigned int Aquarium::MakeQuadVAO(float* data) {
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
     return VAO;
+}
+void Aquarium::RenderCursor(float mouseX, float mouseY, int screenWidth, int screenHeight, unsigned int cursorTex) {
+    float x = (mouseX / screenWidth) * 2.0f - 1.0f;
+    float y = 1.0f - (mouseY / screenHeight) * 2.0f;
+
+    float size = 0.1f; 
+    float cursorQuad[] = {
+        x - size, y - size, 0.0f, 0.0f,
+        x + size, y - size, 1.0f, 0.0f,
+        x + size, y + size, 1.0f, 1.0f,
+        x - size, y + size, 0.0f, 1.0f
+    };
+
+    unsigned int VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cursorQuad), cursorQuad, GL_DYNAMIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glUseProgram(texShader);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, cursorTex);
+    glUniform1i(glGetUniformLocation(texShader, "uTex"), 0);
+
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+}
+void Aquarium::RenderCursorAtMouse(double mouseX, double mouseY) {
+    RenderCursor((float)mouseX, (float)mouseY, screenWidth, screenHeight, cursorTex);
 }
