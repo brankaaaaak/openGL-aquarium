@@ -136,7 +136,7 @@ void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
             p.y < goldfish.y + goldfish.height)
         {
             p.active = false;
-            goldfish.height += 0.03f; 
+            goldfish.height += 0.04f; 
         }
     }
 
