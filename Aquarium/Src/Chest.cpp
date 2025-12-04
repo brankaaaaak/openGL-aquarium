@@ -1,15 +1,15 @@
 #include "Chest.h"
 #include <glad/glad.h>
 
-Chest::Chest() : VAO(0), VBO(0), state(0) {}
+Chest::Chest() : VAO(0), VBO(0), state(0), opening(false), keyCPressedLastFrame(false) {}
 
 Chest::~Chest() {
     if (VBO) glDeleteBuffers(1, &VBO);
     if (VAO) glDeleteVertexArrays(1, &VAO);
 }
 
-void Chest::Init(unsigned int tex[5]) {
-    for (int i = 0; i < 5; ++i) {
+void Chest::Init(unsigned int tex[2]) {
+    for (int i = 0; i < 2; ++i) {
         textures[i] = tex[i];
     }
 
@@ -39,15 +39,18 @@ void Chest::Init(unsigned int tex[5]) {
 
     glBindVertexArray(0);
 }
+void Chest::Update(GLFWwindow* window) {
+    bool cPressedNow = glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS;
 
-void Chest::Update(bool opening) {
-    if (opening && state < 1) {
-        state++;
+    if (cPressedNow && !keyCPressedLastFrame) {
+        opening = !opening;
     }
-    else if (!opening && state > 0) {
-        state--;
-    }
+    keyCPressedLastFrame = cPressedNow;
+
+    if (opening) state = 1;
+    else state = 0;
 }
+
 
 void Chest::Render(unsigned int shader) {
     glUseProgram(shader);

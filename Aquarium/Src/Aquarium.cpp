@@ -110,7 +110,7 @@ void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
     enterPressedLastFrame = enterPressedNow;
 
     enterPressedLastFrame = enterPressedNow;
-    chest.Update(chestOpening);
+    chest.Update(window);
     nemo.Update(window);     
     goldfish.Update(window);
     float waterLevel = 0.2f;     

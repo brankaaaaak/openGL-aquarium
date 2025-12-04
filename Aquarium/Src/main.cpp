@@ -32,14 +32,6 @@ int main() {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
 
-        //C
-        if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS && !keyCPressed) {
-            keyCPressed = true;
-            chestOpening = !chestOpening;
-        }
-        if (glfwGetKey(window, GLFW_KEY_C) == GLFW_RELEASE)
-            keyCPressed = false;
-
         aquarium.Update(chestOpening, window);
 
         glClear(GL_COLOR_BUFFER_BIT);
