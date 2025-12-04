@@ -94,7 +94,7 @@ void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
     if (enterPressedNow && !enterPressedLastFrame)
     {
         float startY = 1.2f;
-        int num = 2 + rand() % 4;  // 2 do 5 
+        int num = 1 + rand() % 3;  // 1 do 3
         float centerX = -0.7f + static_cast<float>(rand()) / RAND_MAX * 1.4f; // -0.7 do 0.7
 
         for (int i = 0; i < num; i++) {
@@ -126,7 +126,7 @@ void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
             p.y < nemo.y + nemo.height)
         {
             p.active = false;
-            nemo.height += 0.04f;     
+            nemo.height += 0.02f;     
         }
 
         if (p.active &&
@@ -136,7 +136,7 @@ void Aquarium::Update(bool chestOpening, GLFWwindow* window) {
             p.y < goldfish.y + goldfish.height)
         {
             p.active = false;
-            goldfish.height += 0.04f; 
+            goldfish.height += 0.02f; 
         }
     }
 
