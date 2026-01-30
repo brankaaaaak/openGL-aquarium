@@ -465,4 +465,4 @@ FodyWeavers.xsd
 *.msp
 
 # Allow everything inside exports to be committed
-!exports/**
+!Aquarium/external/**
