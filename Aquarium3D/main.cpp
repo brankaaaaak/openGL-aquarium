@@ -314,6 +314,17 @@ int main() {
                 goldfish.position += pushDir * (overlap * 0.5f);
                 nemofish.position -= pushDir * (overlap * 0.5f);
             }
+            float distToChestGold = glm::distance(goldfish.position, chestPos);
+            if (distToChestGold < 2.5f) {
+                glm::vec3 pushDir = glm::normalize(goldfish.position - chestPos);
+                goldfish.position = chestPos + pushDir * 2.5f;
+            }
+
+            float distToChestNemo = glm::distance(nemofish.position, chestPos);
+            if (distToChestNemo < 2.5f) {
+                glm::vec3 pushDir = glm::normalize(nemofish.position - chestPos);
+                nemofish.position = chestPos + pushDir * 2.5f;
+            }
 
             shader.setBool("uUseTexture", true);
             goldfish.draw(shader);
