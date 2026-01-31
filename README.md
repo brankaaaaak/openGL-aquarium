@@ -6,7 +6,7 @@ This project is an OpenGL-based simulation of an aquarium for course Computer gr
 
 ## Controls & Interaction
 
-### **3D Simulation Controls (Active Version)**
+### **3D Simulation Controls**
 | Action | **Goldfish** | **Nemo / Clownfish** |
 | :--- | :--- | :--- |
 | **Horizontal (X/Z axis)** | `W`, `A`, `S`, `D` | `Up`, `Down`, `Left`, `Right` |
@@ -19,7 +19,7 @@ This project is an OpenGL-based simulation of an aquarium for course Computer gr
 
 ---
 
-### **2D Simulation Controls (Legacy/Reference)**
+### **2D Simulation Controls**
 | Action | **Goldfish** | **Nemo / Clownfish** |
 | :--- | :--- | :--- |
 | **Movement** | `W`, `A`, `S`, `D` | `Up`, `Down`, `Left`, `Right` |
