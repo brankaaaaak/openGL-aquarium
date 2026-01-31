@@ -325,6 +325,23 @@ int main() {
                 glm::vec3 pushDir = glm::normalize(nemofish.position - chestPos);
                 nemofish.position = chestPos + pushDir * 2.5f;
             }
+            float plantRadius = 3.2f;
+            std::vector<glm::vec3*> fishPositions = { &goldfish.position, &nemofish.position };
+            std::vector<float*> fishTargetRots = { &goldfish.targetRotation, &nemofish.targetRotation };
+            std::vector<glm::vec3> plants = { seaweedPos, seaweed2Pos };
+
+            for (int f = 0; f < 2; f++) {
+                for (int p = 0; p < 2; p++) {
+                    float dX = fishPositions[f]->x - plants[p].x;
+                    float dZ = fishPositions[f]->z - plants[p].z;
+                    float dist = sqrt(dX * dX + dZ * dZ);
+                    if (dist < plantRadius) {
+                        glm::vec3 pushDir = glm::normalize(glm::vec3(dX, 0.0f, dZ));
+                        *fishPositions[f] += pushDir * (plantRadius - dist);
+                        *fishTargetRots[f] = glm::degrees(atan2(pushDir.x, pushDir.z));
+                    }
+                }
+            }
 
             shader.setBool("uUseTexture", true);
             goldfish.draw(shader);
