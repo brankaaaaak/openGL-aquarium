@@ -463,3 +463,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Allow everything inside exports to be committed
+!Aquarium/external/**
+!Aquarium3D/res/**
