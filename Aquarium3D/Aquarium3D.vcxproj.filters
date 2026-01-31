@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{615e2ad2-b879-482a-824b-2df282b59021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{f97daef1-a183-4cf4-9b77-40a6d9f35cdd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Shader\basic.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\basic.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="res\Mesh_Fish.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Mesh_Goldfish.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Mesh_Fish.obj">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Mesh_Goldfish.obj">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\CHAHIN_ANEMONE.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\CHAHIN_ANEMONE.mtl.bak">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\PUSHILIN_kelp.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\CHAHIN_ANEMONE.obj">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\PUSHILIN_kelp.obj">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\materials.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\materials.mtl.bak">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\model.obj">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Renaissance_Chest.mtl" />
+    <None Include="res\Renaissance_Chest.obj" />
+    <None Include="res\Rock1.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Rock1.obj">
+      <Filter>res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header Files\mesh.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\model.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\goldfish.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\nemo.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\sand.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\Tex_Goldfish.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\Tex_Salmon.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\CHAHIN_ANEMONE_TEXTURE.jpg">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\PUSHILIN_kelp.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_AO.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_AlbedoTr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Metallic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Roughnes.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
