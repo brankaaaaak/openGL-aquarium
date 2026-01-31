@@ -264,7 +264,8 @@ int main() {
             shader.setMat4("uP", projection);
             shader.setMat4("uV", view);
             shader.setVec3("uLightPos", glm::vec3(5.0f, 10.0f, 5.0f));
-            shader.setVec3("uLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+            //shader.setVec3("uLightColor", glm::vec3(1.0f, 1.0f, 1.0f)); //bijela
+            shader.setVec3("uLightColor", glm::vec3(1.0f, 0.75f, 0.85f)); //roza
             shader.setVec3("uViewPos", glm::vec3(0, 8, 20));
 
             float intensity = lidAngle / maxLidAngle;
