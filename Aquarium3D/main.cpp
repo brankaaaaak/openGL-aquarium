@@ -20,6 +20,10 @@ bool depthTestEnabled = true;
 bool faceCullEnabled = false;
 bool tKeyPressed = false;
 bool cKeyPressed = false;
+bool gKeyPressed = false;
+bool chestOpen = false;
+float lidAngle = 0.0f; 
+const float maxLidAngle = 80.0f; 
 
 void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -179,8 +183,12 @@ int main() {
 
     Mesh sand = sandGenerator();
     unsigned int sandTex = TextureFromFile("sand.png", "res");
+    unsigned int chestTex = TextureFromFile("MonasteryProps01_MonasteryProps01_Roughnes.png", "res"); 
 
     Model bubbleModel("res/model.obj"); 
+
+    Model chestModel("res/Renaissance_Chest.obj");
+    glm::vec3 chestPos = glm::vec3(-4.0f, -2.7f, 6.0f);
 
     // pozicije biljaka
     glm::vec3 seaweedPos = glm::vec3(-6.0f, -3.0f, -5.0f);
@@ -212,10 +220,22 @@ int main() {
             }
             if (glfwGetKey(window, GLFW_KEY_2) == GLFW_RELEASE) key2Pressed = false;
 
+            // Logika za taster G
+            if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS && !gKeyPressed) {
+                chestOpen = !chestOpen;
+                gKeyPressed = true;
+            }
+            if (glfwGetKey(window, GLFW_KEY_G) == GLFW_RELEASE) gKeyPressed = false;
+
+            // otvaranje i zatvaranje
+            if (chestOpen && lidAngle < maxLidAngle) lidAngle += 2.0f;
+            else if (!chestOpen && lidAngle > 0.0f) lidAngle -= 2.0f;
+
             glClearColor(0.0f, 0.1f, 0.25f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             shader.use();
+            shader.setBool("uUseTexture", true);
 
             // kamera i svjetlo
             glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)mode->width / mode->height, 0.1f, 100.0f);
@@ -225,6 +245,62 @@ int main() {
             shader.setVec3("uLightPos", glm::vec3(5.0f, 10.0f, 5.0f));
             shader.setVec3("uLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
             shader.setVec3("uViewPos", glm::vec3(0, 8, 20));
+
+            float intensity = lidAngle / maxLidAngle;
+            glm::vec3 goldColor = glm::vec3(1.0f, 0.6f, 0.0f); 
+            shader.setVec3("uChestLightColor", goldColor * intensity * 3.5f); // povecati jacinu?
+
+            // KOVČEG!!!!
+            shader.use();
+            shader.setBool("uUseTexture", true);
+            shader.setBool("uUseTint", true);
+            shader.setVec3("uTintColor", glm::vec3(0.45f, 0.25f, 0.15f)); 
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, chestTex);
+
+            glm::mat4 modelChestBase = glm::translate(glm::mat4(1.0f), chestPos);
+            modelChestBase = glm::scale(modelChestBase, glm::vec3(2.0f));
+            modelChestBase = glm::rotate(modelChestBase, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+            glm::vec3 chestLightLocal = glm::vec3(0.0f, 0.35f, 0.25f); // pozicija unutar kovčega
+            glm::vec3 chestLightPosition = glm::vec3(modelChestBase * glm::vec4(chestLightLocal, 1.0f));
+            shader.setVec3("uChestLightPos", chestLightPosition);
+
+            shader.setMat4("uM", modelChestBase);
+            chestModel.meshes[0].Draw(shader); // katanac
+            chestModel.meshes[2].Draw(shader); // dno
+
+            // poklopac
+            glm::mat4 modelLid = modelChestBase;
+
+            // osa na zadnjoj ivici
+            glm::vec3 hingeOffset = glm::vec3(0.0f, 0.35f, 0.35f);
+
+            modelLid = glm::translate(modelLid, hingeOffset);
+
+            // - ispred lidAngle jer je obrnut da ide na gore
+            modelLid = glm::rotate(modelLid, glm::radians(-lidAngle), glm::vec3(1.0f, 0.0f, 0.0f));
+
+            modelLid = glm::translate(modelLid, -hingeOffset);
+
+            shader.setMat4("uM", modelLid);
+            chestModel.meshes[1].Draw(shader); // poklopac
+
+            if (lidAngle > 5.0f) {
+                glEnable(GL_BLEND);
+                shader.setBool("uUseTexture", false);
+                shader.setBool("uUseTint", false);
+                shader.setVec4("uColor", glm::vec4(1.0f, 0.7f, 0.0f, intensity * 0.5f));
+
+                glm::vec3 glowLocal = glm::vec3(0.0f, 0.5f, 0.0f);
+                glm::vec3 glowWorld = glm::vec3(modelLid * glm::vec4(glowLocal, 1.0f));
+
+                glm::mat4 modelGlow = glm::translate(glm::mat4(1.0f), glowWorld);
+                modelGlow = glm::scale(modelGlow, glm::vec3(1.5f, 0.8f, 1.0f));
+                shader.setMat4("uM", modelGlow);
+
+                renderCube();
+            }
 
             // ribe
             goldfish.update(window);
@@ -301,7 +377,9 @@ int main() {
             bubbles.erase(std::remove_if(bubbles.begin(), bubbles.end(),
                 [](const Bubble& b) { return !b.active; }), bubbles.end());
 
+
             // stakla
+            shader.setBool("uUseTexture", false);
             shader.setVec4("uColor", glm::vec4(0.0f, 0.5f, 1.0f, 0.2f));
             auto drawGlass = [&](glm::vec3 pos, glm::vec3 sc) {
                 shader.setMat4("uM", glm::scale(glm::translate(glm::mat4(1.0f), pos), sc));

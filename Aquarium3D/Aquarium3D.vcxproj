@@ -135,6 +135,7 @@
     <None Include="res\Mesh_Fish.mtl" />
     <None Include="res\Mesh_Goldfish.mtl" />
     <None Include="res\PUSHILIN_kelp.mtl" />
+    <None Include="res\Renaissance_Chest.mtl" />
     <None Include="Shader\basic.frag" />
     <None Include="Shader\basic.vert" />
   </ItemGroup>
@@ -159,6 +160,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\CHAHIN_ANEMONE_TEXTURE.jpg" />
+    <Image Include="res\MonasteryProps01_AO.png" />
+    <Image Include="res\MonasteryProps01_MonasteryProps01_AlbedoTr.png" />
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Metallic.png" />
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Normal.png" />
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Roughnes.png" />
     <Image Include="res\PUSHILIN_kelp.png" />
     <Image Include="res\sand.png" />
     <Image Include="res\Tex_Goldfish.png" />
@@ -174,6 +180,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\model.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Renaissance_Chest.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
