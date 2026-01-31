@@ -252,7 +252,8 @@ int main() {
             if (chestOpen && lidAngle < maxLidAngle) lidAngle += 2.0f;
             else if (!chestOpen && lidAngle > 0.0f) lidAngle -= 2.0f;
 
-            glClearColor(0.0f, 0.1f, 0.25f, 1.0f);
+            glClearColor(0.0f, 0.1f, 0.25f, 1.0f); //tamnija
+            //glClearColor(0.1f, 0.3f, 0.45f, 1.0f); //svjetlija
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             shader.use();
@@ -261,6 +262,7 @@ int main() {
             // kamera i svjetlo
             glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)mode->width / mode->height, 0.1f, 100.0f);
             glm::mat4 view = glm::lookAt(glm::vec3(0, 8, 20), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+            //glm::mat4 view = glm::lookAt(glm::vec3(0, -1, 2), glm::vec3(0, -1, 0), glm::vec3(0, 1, 0));
             shader.setMat4("uP", projection);
             shader.setMat4("uV", view);
             shader.setVec3("uLightPos", glm::vec3(5.0f, 10.0f, 5.0f));
