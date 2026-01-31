@@ -14,6 +14,7 @@
 #include <vector>
 #include <iostream>
 #include "Header Files/goldfish.hpp"
+#include "Header Files/nemo.hpp"
 
 bool depthTestEnabled = true;
 bool faceCullEnabled = false; 
@@ -181,6 +182,9 @@ int main() {
     Model goldfishModel("res/Mesh_Goldfish.obj"); 
     Goldfish goldfish(&goldfishModel, glm::vec3(0.0f, 0.0f, 0.0f));
 
+    Model nemoModel("res/Mesh_Fish.obj"); 
+    NemoFish nemofish(&nemoModel, glm::vec3(3.0f, 0.0f, 0.0f)); 
+
     double lastFrameTime = 0.0;
 
     while (!glfwWindowShouldClose(window)) {
@@ -206,10 +210,30 @@ int main() {
             shader.setVec3("uLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
             shader.setVec3("uViewPos", glm::vec3(0, 8, 20));
 
-            //gold f
-            shader.setBool("uUseTexture", true); 
+            //ribe
             goldfish.update(window);           // tasteri
+            nemofish.update(window);
+
+            float distance = glm::distance(goldfish.position, nemofish.position);
+            float minDistance = 3.3f; 
+
+            if (distance < minDistance) {
+                glm::vec3 pushDir = glm::normalize(goldfish.position - nemofish.position);
+
+                float overlap = minDistance - distance;
+                goldfish.position += pushDir * (overlap * 0.5f);
+                nemofish.position -= pushDir * (overlap * 0.5f);
+
+                float angleGoldfish = glm::degrees(atan2(pushDir.x, pushDir.z));
+                float angleNemo = glm::degrees(atan2(-pushDir.x, -pushDir.z));
+
+                goldfish.targetRotation = angleGoldfish;
+                nemofish.targetRotation = angleNemo;
+            }
+
+            shader.setBool("uUseTexture", true); 
             goldfish.draw(shader);             // nova pozicija
+            nemofish.draw(shader);
 
             //pijesak
             glm::mat4 modelPesak = glm::translate(glm::mat4(1.0f), glm::vec3(0, -3.0f, 0));

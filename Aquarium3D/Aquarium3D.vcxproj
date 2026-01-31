@@ -128,6 +128,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="res\Mesh_Fish.mtl" />
+    <None Include="res\Mesh_Goldfish.mtl" />
     <None Include="Shader\basic.frag" />
     <None Include="Shader\basic.vert" />
   </ItemGroup>
@@ -138,8 +140,22 @@
     <ClInclude Include="Header Files\goldfish.hpp" />
     <ClInclude Include="Header Files\mesh.hpp" />
     <ClInclude Include="Header Files\model.hpp" />
+    <ClInclude Include="Header Files\nemo.hpp" />
     <ClInclude Include="Header Files\shader.hpp" />
     <ClInclude Include="Header Files\stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Mesh_Fish.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="res\Mesh_Goldfish.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\sand.png" />
+    <Image Include="res\Tex_Goldfish.png" />
+    <Image Include="res\Tex_Salmon.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

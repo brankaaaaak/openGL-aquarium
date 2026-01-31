@@ -28,6 +28,18 @@
     <None Include="Shader\basic.vert">
       <Filter>Shader</Filter>
     </None>
+    <None Include="res\Mesh_Fish.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Mesh_Goldfish.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Mesh_Fish.obj">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Mesh_Goldfish.obj">
+      <Filter>res</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,5 +62,19 @@
     <ClInclude Include="Header Files\goldfish.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header Files\nemo.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\sand.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\Tex_Goldfish.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\Tex_Salmon.png">
+      <Filter>res</Filter>
+    </Image>
   </ItemGroup>
 </Project>
