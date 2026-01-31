@@ -130,6 +130,8 @@
     <None Include="packages.config" />
     <None Include="res\CHAHIN_ANEMONE.mtl" />
     <None Include="res\CHAHIN_ANEMONE.mtl.bak" />
+    <None Include="res\materials.mtl" />
+    <None Include="res\materials.mtl.bak" />
     <None Include="res\Mesh_Fish.mtl" />
     <None Include="res\Mesh_Goldfish.mtl" />
     <None Include="res\PUSHILIN_kelp.mtl" />
@@ -167,6 +169,11 @@
       <FileType>Document</FileType>
     </None>
     <None Include="res\PUSHILIN_kelp.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\model.obj">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

@@ -55,6 +55,15 @@
     <None Include="res\PUSHILIN_kelp.obj">
       <Filter>res</Filter>
     </None>
+    <None Include="res\materials.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\materials.mtl.bak">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\model.obj">
+      <Filter>res</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

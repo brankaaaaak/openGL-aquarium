@@ -131,6 +131,24 @@ Mesh sandGenerator() {
     return Mesh(vertices, indices, {});
 }
 
+struct Bubble {
+    glm::vec3 position;
+    float speed;
+    float horizontalOffset; // za pomijeranje njihovo
+    float startTime;
+    bool active;
+
+    Bubble(glm::vec3 startPos) {
+        position = startPos;
+        speed = 0.03f + (rand() % 100 / 5000.0f); // nasumična brzina ka gore
+        horizontalOffset = (rand() % 100 / 10.0f); // različit početak njihovog pomijeranja
+        startTime = (float)glfwGetTime();
+        active = true;
+    }
+};
+//lista svih mjehurića u akvarijumu
+std::vector<Bubble> bubbles;
+
 int main() {
     glfwInit();
     GLFWmonitor* primary = glfwGetPrimaryMonitor();
@@ -162,6 +180,8 @@ int main() {
     Mesh sand = sandGenerator();
     unsigned int sandTex = TextureFromFile("sand.png", "res");
 
+    Model bubbleModel("res/model.obj"); 
+
     // pozicije biljaka
     glm::vec3 seaweedPos = glm::vec3(-6.0f, -3.0f, -5.0f);
     glm::vec3 seaweed2Pos = glm::vec3(5.0f, -3.0f, 2.0f);
@@ -172,7 +192,25 @@ int main() {
         double currentTime = glfwGetTime();
         if (currentTime - lastFrameTime >= 1.0 / 75.0) {
             lastFrameTime = currentTime;
+
             processInput(window);
+
+            static bool key1Pressed = false;
+            static bool key2Pressed = false;
+
+            // 1 - gold fish
+            if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !key1Pressed) {
+                bubbles.push_back(Bubble(goldfish.position + glm::vec3(0, 0.5f, 0)));
+                key1Pressed = true;
+            }
+            if (glfwGetKey(window, GLFW_KEY_1) == GLFW_RELEASE) key1Pressed = false;
+
+            // 2 - druga riba
+            if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && !key2Pressed) {
+                bubbles.push_back(Bubble(nemofish.position + glm::vec3(0, 0.5f, 0)));
+                key2Pressed = true;
+            }
+            if (glfwGetKey(window, GLFW_KEY_2) == GLFW_RELEASE) key2Pressed = false;
 
             glClearColor(0.0f, 0.1f, 0.25f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -188,7 +226,7 @@ int main() {
             shader.setVec3("uLightColor", glm::vec3(1.0f, 1.0f, 1.0f));
             shader.setVec3("uViewPos", glm::vec3(0, 8, 20));
 
-            // update riba
+            // ribe
             goldfish.update(window);
             nemofish.update(window);
 
@@ -199,42 +237,19 @@ int main() {
                 float overlap = 3.3f - fishDist;
                 goldfish.position += pushDir * (overlap * 0.5f);
                 nemofish.position -= pushDir * (overlap * 0.5f);
-                goldfish.targetRotation = glm::degrees(atan2(pushDir.x, pushDir.z));
-                nemofish.targetRotation = glm::degrees(atan2(-pushDir.x, -pushDir.z));
             }
 
-            // sudar sa biljkama
-            float plantRadius = 3.2f;
-            std::vector<glm::vec3*> fishPositions = { &goldfish.position, &nemofish.position };
-            std::vector<float*> fishTargetRots = { &goldfish.targetRotation, &nemofish.targetRotation };
-            std::vector<glm::vec3> plants = { seaweedPos, seaweed2Pos };
-
-            for (int f = 0; f < 2; f++) {
-                for (int p = 0; p < 2; p++) {
-                    float dX = fishPositions[f]->x - plants[p].x;
-                    float dZ = fishPositions[f]->z - plants[p].z;
-                    float dist = sqrt(dX * dX + dZ * dZ);
-                    if (dist < plantRadius) {
-                        glm::vec3 pushDir = glm::normalize(glm::vec3(dX, 0.0f, dZ));
-                        *fishPositions[f] += pushDir * (plantRadius - dist);
-                        *fishTargetRots[f] = glm::degrees(atan2(pushDir.x, pushDir.z));
-                    }
-                }
-            }
-
-            // crtanje riba
             shader.setBool("uUseTexture", true);
             goldfish.draw(shader);
             nemofish.draw(shader);
 
-            // crtanje pijeska
+            // pijesak i biljke
             glm::mat4 modelSand = glm::translate(glm::mat4(1.0f), glm::vec3(0, -3.0f, 0));
             shader.setMat4("uM", modelSand);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, sandTex);
             sand.Draw(shader);
 
-            // Crtanje algi
             glm::mat4 modelKelp = glm::translate(glm::mat4(1.0f), seaweedPos);
             modelKelp = glm::scale(modelKelp, glm::vec3(1.6f));
             shader.setMat4("uM", modelKelp);
@@ -245,7 +260,7 @@ int main() {
             shader.setMat4("uM", modelAnemone);
             seaweed2Model.Draw(shader);
 
-            // dno, stubovi, stakla
+            // stubovi i dno
             shader.setBool("uUseTexture", false);
             shader.setVec4("uColor", glm::vec4(0.05f, 0.05f, 0.05f, 1.0f));
             glm::mat4 modelBottom = glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0, -3.2f, 0)), glm::vec3(20.0f, 0.2f, 20.0f));
@@ -260,15 +275,42 @@ int main() {
                 renderCube();
             }
 
+            // mjehurići
+            for (int i = 0; i < bubbles.size(); i++) {
+                if (bubbles[i].active) {
+                    bubbles[i].position.y += bubbles[i].speed;
+                    float waveTime = (float)glfwGetTime() * 3.0f;
+                    float wave = sin(waveTime + bubbles[i].horizontalOffset) * 0.15f;
+
+                    if (bubbles[i].position.y > 4.5f) {
+                        bubbles[i].active = false;
+                        continue;
+                    }
+
+                    shader.setBool("uUseTexture", false);
+                    shader.setVec4("uColor", glm::vec4(0.8f, 0.9f, 1.0f, 0.4f));
+
+                    glm::mat4 modelBubble = glm::mat4(1.0f);
+                    modelBubble = glm::translate(modelBubble, bubbles[i].position + glm::vec3(wave, 0, 0));
+                    modelBubble = glm::scale(modelBubble, glm::vec3(2.0f, 2.0f, 2.0f));
+                    shader.setMat4("uM", modelBubble);
+
+                    bubbleModel.Draw(shader); 
+                }
+            }
+            bubbles.erase(std::remove_if(bubbles.begin(), bubbles.end(),
+                [](const Bubble& b) { return !b.active; }), bubbles.end());
+
+            // stakla
             shader.setVec4("uColor", glm::vec4(0.0f, 0.5f, 1.0f, 0.2f));
             auto drawGlass = [&](glm::vec3 pos, glm::vec3 sc) {
                 shader.setMat4("uM", glm::scale(glm::translate(glm::mat4(1.0f), pos), sc));
                 renderCube();
                 };
-            drawGlass({ 0,1,-10 }, { 20,8,0.1f });
-            drawGlass({ 0,1,10 }, { 20,8,0.1f });
-            drawGlass({ -10,1,0 }, { 0.1f,8,20 });
-            drawGlass({ 10,1,0 }, { 0.1f,8,20 });
+            drawGlass({ 0, 1, -10 }, { 20, 8, 0.1f });
+            drawGlass({ 0, 1, 10 }, { 20, 8, 0.1f });
+            drawGlass({ -10, 1, 0 }, { 0.1f, 8, 20 });
+            drawGlass({ 10, 1, 0 }, { 0.1f, 8, 20 });
 
             glfwSwapBuffers(window);
             glfwPollEvents();
