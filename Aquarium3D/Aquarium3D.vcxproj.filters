@@ -40,6 +40,21 @@
     <None Include="res\Mesh_Goldfish.obj">
       <Filter>res</Filter>
     </None>
+    <None Include="res\CHAHIN_ANEMONE.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\CHAHIN_ANEMONE.mtl.bak">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\PUSHILIN_kelp.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\CHAHIN_ANEMONE.obj">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\PUSHILIN_kelp.obj">
+      <Filter>res</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -74,6 +89,12 @@
       <Filter>res</Filter>
     </Image>
     <Image Include="res\Tex_Salmon.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\CHAHIN_ANEMONE_TEXTURE.jpg">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\PUSHILIN_kelp.png">
       <Filter>res</Filter>
     </Image>
   </ItemGroup>

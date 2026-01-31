@@ -128,8 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="res\CHAHIN_ANEMONE.mtl" />
+    <None Include="res\CHAHIN_ANEMONE.mtl.bak" />
     <None Include="res\Mesh_Fish.mtl" />
     <None Include="res\Mesh_Goldfish.mtl" />
+    <None Include="res\PUSHILIN_kelp.mtl" />
     <None Include="Shader\basic.frag" />
     <None Include="Shader\basic.vert" />
   </ItemGroup>
@@ -153,9 +156,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\CHAHIN_ANEMONE_TEXTURE.jpg" />
+    <Image Include="res\PUSHILIN_kelp.png" />
     <Image Include="res\sand.png" />
     <Image Include="res\Tex_Goldfish.png" />
     <Image Include="res\Tex_Salmon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\CHAHIN_ANEMONE.obj">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="res\PUSHILIN_kelp.obj">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
