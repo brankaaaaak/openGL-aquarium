@@ -14,6 +14,7 @@ public:
     float scale;
     float speed;
     Model* model;
+    float thicknessOffset = 0.0f; // koliko se udebljala
 
     Goldfish(Model* modelPtr, glm::vec3 startPos) {
         model = modelPtr;
@@ -79,11 +80,9 @@ public:
     void draw(Shader& shader) {
         glm::mat4 modelMat = glm::mat4(1.0f);
         modelMat = glm::translate(modelMat, position);
-
-        // rotacija oko Y ose 
         modelMat = glm::rotate(modelMat, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        modelMat = glm::scale(modelMat, glm::vec3(scale));
+        modelMat = glm::scale(modelMat, glm::vec3(scale, scale + thicknessOffset, scale));
 
         shader.setMat4("uM", modelMat);
         model->Draw(shader);

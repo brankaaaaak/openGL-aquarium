@@ -64,6 +64,14 @@
     <None Include="res\model.obj">
       <Filter>res</Filter>
     </None>
+    <None Include="res\Renaissance_Chest.mtl" />
+    <None Include="res\Renaissance_Chest.obj" />
+    <None Include="res\Rock1.mtl">
+      <Filter>res</Filter>
+    </None>
+    <None Include="res\Rock1.obj">
+      <Filter>res</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,6 +113,21 @@
     </Image>
     <Image Include="res\PUSHILIN_kelp.png">
       <Filter>res</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_AO.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_AlbedoTr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Metallic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MonasteryProps01_MonasteryProps01_Roughnes.png">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>

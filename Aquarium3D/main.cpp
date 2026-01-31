@@ -153,6 +153,14 @@ struct Bubble {
 //lista svih mjehurića u akvarijumu
 std::vector<Bubble> bubbles;
 
+struct Food {
+    glm::vec3 position;
+    bool active;
+    float speed = 0.03f;
+    Food(glm::vec3 pos) : position(pos), active(true) {}
+};
+std::vector<Food> fishFood;
+
 int main() {
     glfwInit();
     GLFWmonitor* primary = glfwGetPrimaryMonitor();
@@ -190,6 +198,8 @@ int main() {
     Model chestModel("res/Renaissance_Chest.obj");
     glm::vec3 chestPos = glm::vec3(-4.0f, -2.7f, 6.0f);
 
+    Model foodModel("res/Rock1.obj");
+
     // pozicije biljaka
     glm::vec3 seaweedPos = glm::vec3(-6.0f, -3.0f, -5.0f);
     glm::vec3 seaweed2Pos = glm::vec3(5.0f, -3.0f, 2.0f);
@@ -226,6 +236,17 @@ int main() {
                 gKeyPressed = true;
             }
             if (glfwGetKey(window, GLFW_KEY_G) == GLFW_RELEASE) gKeyPressed = false;
+
+            static bool enterPressed = false;
+            if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && !enterPressed) {
+                for (int i = 0; i < 2; i++) { 
+                    float rx = ((rand() % 100) / 100.0f) * 14.0f - 7.0f;
+                    float rz = ((rand() % 100) / 100.0f) * 14.0f - 7.0f;
+                    fishFood.push_back(Food(glm::vec3(rx, 10.0f, rz)));
+                }
+                enterPressed = true;
+            }
+            if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_RELEASE) enterPressed = false;
 
             // otvaranje i zatvaranje
             if (chestOpen && lidAngle < maxLidAngle) lidAngle += 2.0f;
@@ -378,6 +399,39 @@ int main() {
                 shader.setMat4("uM", m);
                 renderCube();
             }
+
+            for (int i = 0; i < fishFood.size(); i++) {
+                if (!fishFood[i].active) continue;
+
+                if (fishFood[i].position.y > -2.7f)
+                    fishFood[i].position.y -= fishFood[i].speed;
+                //da li ribe jedu
+                if (glm::distance(fishFood[i].position, goldfish.position) < 1.2f) {
+                    fishFood[i].active = false;
+                    goldfish.thicknessOffset += 0.01f; 
+                }
+                if (glm::distance(fishFood[i].position, nemofish.position) < 1.2f) {
+                    fishFood[i].active = false;
+                    nemofish.thicknessOffset += 0.01f;
+                }
+
+                // crtanje hrane
+                if (fishFood[i].active) {
+                    shader.setBool("uUseTexture", false);
+                    shader.setVec4("uColor", glm::vec4(0.5f, 0.3f, 0.1f, 1.0f)); 
+                    glm::mat4 m = glm::translate(glm::mat4(1.0f), fishFood[i].position);
+                    m = glm::scale(m, glm::vec3(0.15f)); 
+                    shader.setMat4("uM", m);
+                    if (foodModel.meshes.size() > 1) {
+                        foodModel.meshes[1].Draw(shader); 
+                    }
+                    else {
+                        foodModel.Draw(shader); 
+                    }
+                }
+            }
+            // čišćenje pojedene hrane
+            fishFood.erase(std::remove_if(fishFood.begin(), fishFood.end(), [](const Food& f) { return !f.active; }), fishFood.end());
 
             // mjehurići
             for (int i = 0; i < bubbles.size(); i++) {
